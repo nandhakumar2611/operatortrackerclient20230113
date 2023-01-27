@@ -64,14 +64,14 @@ const Login = () => {
               <CCard className="text-white bg-primary py-5">
                 <CCardBody className="text-center">
                   <div>
-                    <h2>Operator Tracker</h2>
+                    <h2>Mind Job Card</h2>
                   </div>
                 </CCardBody>
               </CCard>
               <CCard className="p-4">
                 <CCardBody>
                   <CForm onSubmit={handleLogin} >
-                    <h1>Web App Login</h1>
+                    <h1>Login</h1>
                     <p className="text-medium-emphasis">Sign In to your account</p>
                     <CAlert color="danger" dismissible visible={visibleAlertFail} onClose={() => setVisibleAlertFail(false)} className="text-center">Failed! Login name or password error</CAlert>
                     <CInputGroup className="mb-3">
