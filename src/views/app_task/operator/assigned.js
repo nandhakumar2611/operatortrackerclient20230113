@@ -91,12 +91,12 @@ const OperatorAssigned = () => {
         <>
           <CModal scrollable visible={addVisible} onClose={() => setAddVisible(false)} alignment="center">
             <CModalHeader>
-              <CModalTitle>Add New Machine</CModalTitle>
+              <CModalTitle>Add Operation Time</CModalTitle>
             </CModalHeader>
             <CForm onSubmit={handleSubmit} >
-              <CModalBody>
+              <CModalBody style={{height:'25pc'}}>
                 <CInputGroup className="mb-3">
-                  <CInputGroupText className="col-sm-4">Assign Manager</CInputGroupText>
+                  <CInputGroupText className="col-sm-4">Start Time</CInputGroupText>
                     <CRow>
                       <CCol>
                         <DatePicker
@@ -119,7 +119,7 @@ const OperatorAssigned = () => {
                     </CRow>
                 </CInputGroup>
                 <CInputGroup className="mb-3">
-                  <CInputGroupText className="col-sm-4">Assign Manager</CInputGroupText>
+                  <CInputGroupText className="col-sm-4">End Time</CInputGroupText>
                   <CRow>
                       <CCol>
                         <DatePicker
