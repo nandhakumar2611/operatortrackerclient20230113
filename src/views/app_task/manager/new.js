@@ -108,7 +108,7 @@ const ManagerTaskCreate = () => {
                       <CTableHeaderCell className="text-center">
                         <CAlert color="success" dismissible visible={visibleAlertSuccess} onClose={() => setVisibleAlertSuccess(false)} className="text-center">Success!</CAlert>
                         <CAlert color="danger" dismissible visible={visibleAlertFail} onClose={() => setVisibleAlertFail(false)} className="text-center">Failed!</CAlert>
-                        <h3>Task Form</h3>
+                        <h3>Job Order Form</h3>
                       </CTableHeaderCell>
                     </CTableRow>
                   </CTableHead>
