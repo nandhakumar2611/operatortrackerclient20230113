@@ -18,6 +18,7 @@ const AppSidebar = () => {
 
   return (
     <CSidebar
+      className='bg-primary'
       position="fixed"
       unfoldable={unfoldable}
       visible={sidebarShow}
