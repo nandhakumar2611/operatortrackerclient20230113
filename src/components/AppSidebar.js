@@ -27,7 +27,7 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        <div>Operator Tracker</div>
+        <div>Mind Job Card</div>
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
