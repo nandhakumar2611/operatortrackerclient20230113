@@ -127,12 +127,6 @@ const menu2=[
         to: '/task/operator/list',
         icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
     },
-    {
-        component: CNavItem,
-        name: 'List',
-        to: '/task/manager/list',
-        icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
-    }
 ]
 const menu_nav =()=>{
 
