@@ -39,6 +39,8 @@ const OperatorAssigned = () => {
   let [visibleAlertSuccess, setVisibleAlertSuccess] = useState(false)
   let [visibleAlertFail, setVisibleAlertFail] = useState(false)
   
+  let [resetVisible, setRestVisible] = useState(false)
+
   let [addVisible, setAddVisible] = useState(false)
   let [machineName, setMachineName]=useState('')
 
@@ -46,6 +48,9 @@ const OperatorAssigned = () => {
 
   let [startTime, setStartTime]=useState( setHours(setMinutes(new Date(), 30), 16))
   let [endTime, setEndTime]=useState( setHours(setMinutes(new Date(), 30), 16))
+
+  let [taskReport, setTaskReport]= useState([])
+  let [taskList, setTaskList]= useState([])
 
   let [reportQtyDone, setReportQtyDone ]= useState('');
   let [reportRemarks, setReportRemarks ]= useState('');
@@ -59,7 +64,112 @@ const OperatorAssigned = () => {
   let [disabledPagePrevious, setDisabledPagePrevious]= useState(false)
   let [disabledPageNext, setDisabledPageNext]= useState(false)
 
-  
+
+  function statCheck(statValue,reportValue) {
+    if(!reportValue && statValue==='inProcess'){
+      return 'notStarted'
+    }
+    return statValue
+  }
+
+  const ContentReports = () => {
+
+    return (
+        <>
+          <CModal scrollable visible={resetVisible} onClose={() => setRestVisible(false)} alignment="center" fullscreen>
+            <CModalHeader>
+              <CModalTitle>Task Report</CModalTitle>
+            </CModalHeader>
+            <CModalBody>
+                  <CCard className="mb-2">
+                    <CCardHeader><strong>Task</strong></CCardHeader>
+                    <CCardBody>
+                      <CInputGroup className="mb-2">
+                        <CInputGroupText className="col-sm-2">Task No</CInputGroupText>
+                        <CFormInput className="me-2" value={taskList.taskNo || ''} disabled />
+                        <CInputGroupText className="col-sm-2">Finsize</CInputGroupText>
+                        <CFormInput value={taskList.finsize || ''} disabled className="me-2"/>
+                        <CInputGroupText className="col-sm-2">Order Date</CInputGroupText>
+                        <CFormInput className="me-2" value={moment(taskList.orderDate || '').format("DD/MM/YYYY")} disabled />
+                      </CInputGroup>
+                      <CInputGroup className="mb-2">
+                        <CInputGroupText className="col-sm-2">Item</CInputGroupText>
+                        <CFormInput className="me-2" value={taskList.item || ''} disabled />
+                        <CInputGroupText className="col-sm-2">Assembly</CInputGroupText>
+                        <CFormInput className="me-2" value={taskList.assembly || ''} disabled />
+                        <CInputGroupText className="col-sm-2">Delivery Date</CInputGroupText>
+                        <CFormInput className="me-2" value={moment(taskList.deliveryDate || '').format("DD/MM/YYYY")} disabled />
+                      </CInputGroup>
+                      <CInputGroup className="mb-2">
+                        <CInputGroupText className="col-sm-2">Part No</CInputGroupText>
+                        <CFormInput className="me-2" value={taskList.partNo || ''} disabled />
+                        <CInputGroupText className="col-sm-2">Purchase Order Qty</CInputGroupText>
+                        <CFormInput className="me-2" value={taskList.purchaseOrderQty || ''} disabled />
+                        <CInputGroupText className="col-sm-2">Production Qty</CInputGroupText>
+                        <CFormInput className="me-2" value={taskList.productionQty || ''} disabled />
+                      </CInputGroup>
+                      <CInputGroup className="mb-2">
+                        <CInputGroupText className="col-sm-2">Purchase Order No</CInputGroupText>
+                        <CFormInput className="me-2" value={taskList.purchaseOrderNo || ''} disabled />
+                        <CInputGroupText className="col-sm-2">Purchase Order Date</CInputGroupText>
+                        <CFormInput className="me-2" value={moment(taskList.purchaseOrderDate || '').format("DD/MM/YYYY")} disabled />
+                        <CInputGroupText className="col-sm-2">Issue Date</CInputGroupText>
+                        <CFormInput className="me-2" value={moment(taskList.issueDate || '').format("DD/MM/YYYY")} disabled />
+                      </CInputGroup>
+                    </CCardBody>
+                  </CCard>
+                  <CCard className="mb-2">
+                    <CCardHeader><strong>Report</strong></CCardHeader>
+                    <CCardBody>
+                      <CTable align="middle" className="mb-0 border" hover responsive>
+                        <CTableHead color="light">
+                          <CTableRow>
+                            <CTableHeaderCell>Operator</CTableHeaderCell>
+                            <CTableHeaderCell>Operation</CTableHeaderCell>
+                            <CTableHeaderCell>Machine</CTableHeaderCell>
+                            <CTableHeaderCell>From</CTableHeaderCell>
+                            <CTableHeaderCell>To</CTableHeaderCell>
+                            <CTableHeaderCell>Assignment Time</CTableHeaderCell>
+                            <CTableHeaderCell>Description</CTableHeaderCell>
+                            <CTableHeaderCell>Target Qty</CTableHeaderCell>
+                            <CTableHeaderCell>State</CTableHeaderCell>
+                            <CTableHeaderCell>Qty Done</CTableHeaderCell>
+                            <CTableHeaderCell>Remarks</CTableHeaderCell>
+                            <CTableHeaderCell>Submit Time</CTableHeaderCell>
+                          </CTableRow>
+                        </CTableHead>
+                        <CTableBody>
+                          {taskReport.map((item, index) => (
+                              <CTableRow v-for="item in tableItems" key={index}>
+                                <CTableHeaderCell>{item.userOperatorName}</CTableHeaderCell>
+                                <CTableHeaderCell>{item.dictOpName}</CTableHeaderCell>
+                                <CTableHeaderCell>{item.machineName}</CTableHeaderCell>
+                                <CTableHeaderCell>{item.fromDate && moment(item.fromDate).format("DD/MM/YYYY")}</CTableHeaderCell>
+                                <CTableHeaderCell>{item.toDate && moment(item.toDate).format("DD/MM/YYYY")}</CTableHeaderCell>
+                                <CTableHeaderCell>{moment(item.assignmentTime).format("HH:mm:ss DD/MM/YYYY")}</CTableHeaderCell>
+                                <CTableHeaderCell>{item.operationDescription}</CTableHeaderCell>
+                                <CTableHeaderCell>{item.targetQty}</CTableHeaderCell>
+                                <CTableHeaderCell>{statCheck(item.assignmentState,item.qtyDone)}</CTableHeaderCell>
+                                <CTableHeaderCell>{item.qtyDone}</CTableHeaderCell>
+                                <CTableHeaderCell>{item.remarks}</CTableHeaderCell>
+                                <CTableHeaderCell>{item.submitTime && moment(item.submitTime).format("HH:mm:ss DD/MM/YYYY")}</CTableHeaderCell>
+                              </CTableRow>
+                          ))
+                          }
+                        </CTableBody>
+                      </CTable>
+                    </CCardBody>
+                  </CCard>
+            </CModalBody>
+            <CModalFooter>
+              <CButton color="secondary" onClick={() => setRestVisible(false)}>
+                Close
+              </CButton>
+            </CModalFooter>
+          </CModal>
+        </>
+    )
+  }
  
 
   const ContentAdd = () => {
@@ -182,6 +292,22 @@ const OperatorAssigned = () => {
         })
         .catch(error => {
           console.log('Something wrong', error);
+        })
+  }
+
+  const TaskView=(item)=>{
+    let initData={
+      taskNo:item.taskNo
+    }
+    console.log(initData)
+    dataService.exe("taskAssignment/listReport",initData)
+        .then(response => {
+          console.log('Printing employees data', response.data);
+          setTaskList(response.data.data.taskList)
+          setTaskReport(response.data.data.list)
+        })
+        .catch(error => {
+          console.log('Something went wrong', error);
         })
   }
 
@@ -379,6 +505,8 @@ const OperatorAssigned = () => {
                                   <CInputGroupText className="col-sm-4">Remarks</CInputGroupText>
                                   <CFormTextarea rows="5" id={"remarks"} required onChange={event => setReportRemarks(event.target.value)} />
                                 </CInputGroup>
+                                <CButton color="primary" onClick={()=>TaskView(item)>setRestVisible(true)}>View</CButton>
+                                &nbsp;&nbsp;
                                 <CButton color="primary" onClick={()=>TaskReport(item,0)}>Report</CButton>
                                 &nbsp;&nbsp;
                                 <CButton color="primary" onClick={()=>TaskReport(item,1)}>Task Done</CButton>
@@ -408,7 +536,7 @@ const OperatorAssigned = () => {
             </CCard>
           </CCol>
         </CRow>
-        
+        {ContentReports()}
       </>
   )
 }
