@@ -315,7 +315,7 @@ const OperatorAssigned = () => {
     let initData={
       pageSize: pageSize,
       pageNum: pageNum,
-      orderByColumn: 'taskAsNo',
+      orderByColumn: 'priority',
       isAsc: 'desc',
       assignmentState:'inProcess'
     }
@@ -324,6 +324,7 @@ const OperatorAssigned = () => {
         .then(response => {
           console.log('Printing employees data', response.data);
           dataPage(response.data)
+          console.log("Data",response.data.total);
         })
         .catch(error => {
           console.log('Something went wrong', error);
@@ -477,6 +478,10 @@ const OperatorAssigned = () => {
                             <CInputGroup className="mb-2">
                               <CInputGroupText className="col-sm-4">Target Qty</CInputGroupText>
                               <CFormInput value={item.targetQty} disabled id="targetQty"  />
+                            </CInputGroup>
+                            <CInputGroup className="mb-2">
+                              <CInputGroupText className="col-sm-4">Priority</CInputGroupText>
+                              <CFormInput value={item.priority} disabled id="targetQty"  />
                             </CInputGroup>
                             <CInputGroup className="mb-2">
                               <CInputGroupText className="col-sm-4">Description</CInputGroupText>
