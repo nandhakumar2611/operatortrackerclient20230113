@@ -14,6 +14,7 @@ const ManagerTaskList = React.lazy(() => import('./views/app_task/manager/list')
 const OperatorTaskAssigned = React.lazy(() => import('./views/app_task/operator/assigned'))
 const OperatorTaskList = React.lazy(() => import('./views/app_task/operator/list'))
 const OperatorTime = React.lazy(() => import('./views/app_admin/operatortime/operatortime'))
+const OperatorTaskListTable = React.lazy(() => import('./views/app_task/operator/tableviewlist'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -30,6 +31,7 @@ const routes = [
   { path: '/task/manager/list', name: 'Task List', element: ManagerTaskList },
   { path: '/task/operator/assigned', name: 'Task Assigned', element: OperatorTaskAssigned },
   { path: '/task/operator/list', name: 'Task List', element: OperatorTaskList },
+  { path: '/task/operator/assignedtable', name: 'Task List', element: OperatorTaskListTable}
 ]
 
 export default routes
