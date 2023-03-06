@@ -222,3 +222,4 @@ const OperatorAssignedList = () => {
 }
 
 export default OperatorAssignedList
+
