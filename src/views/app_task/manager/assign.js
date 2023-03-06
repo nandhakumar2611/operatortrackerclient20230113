@@ -44,6 +44,7 @@ const DashboardManagerAssign = () => {
   let [toDate, setToDate ]= useState(new Date())
   let [userNoOperator, setUserNoOperator ]= useState()
   let [taskOperation, setTaskOperation ]= useState()
+  let [priority,setPriority]= useState()
   let [operationDescription, setOperationDescription ]= useState()
   let [targetQty, setTargetQty ]= useState(0)
   let [employees, setEmployees] = useState([]);
@@ -79,7 +80,8 @@ const DashboardManagerAssign = () => {
         toDate:moment(toDate).format('MM/DD/YYYY'),
         operationDescription:operationDescription,
         targetQty:targetQty,
-        machineNo:machineNo
+        machineNo:machineNo,
+        priority:priority
       }
       dataService.exe("taskAssignment/add",postData)
           .then(response => {
@@ -178,6 +180,10 @@ const DashboardManagerAssign = () => {
               <CInputGroup className="mb-3">
                 <CInputGroupText className="col-sm-4">Description</CInputGroupText>
                 <CFormTextarea id="operationDescription" rows="3" onChange={(event)=>setOperationDescription(event.target.value)} />
+              </CInputGroup>
+              <CInputGroup className="mb-3">
+                <CInputGroupText className="col-sm-4">Priority</CInputGroupText>
+                <CFormInput type="number" id="priority"  onChange={(event)=>setPriority(event.target.value)} />
               </CInputGroup>
                 <CModalFooter>
                   <CButton color="secondary" onClick={() => setAssignVisible(false)}>
