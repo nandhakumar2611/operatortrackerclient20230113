@@ -117,6 +117,12 @@ const menu2=[
     },
     {
         component: CNavItem,
+        name: 'Task Table',
+        to: '/task/operator/assignedtable',
+        icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+    },
+    {
+        component: CNavItem,
         name: 'My Task',
         to: '/task/operator/assigned',
         icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
@@ -216,6 +222,12 @@ const _nav = [
         to: '/task/operator/list',
         icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
     },
+    {
+        component: CNavItem,
+        name: 'List',
+        to: '/task/manager/list',
+        icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
+    }
 ]
 
 
