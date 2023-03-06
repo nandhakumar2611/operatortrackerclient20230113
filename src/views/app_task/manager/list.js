@@ -32,10 +32,11 @@ import moment from "moment";
 const ManagerTaskList = () => {
 
   let [resetVisible, setRestVisible] = useState(false)
-
+  let [delVisible, setDelVisible] = useState(false)
   let [taskReport, setTaskReport]= useState([])
   let [taskList, setTaskList]= useState([])
-
+  let [taskNo, setTaskNo]=useState('')
+  let [taskAsNo, setTaskAsNo]=useState('')
   let [employees, setEmployees] = useState([]);
   let [pageTotal, setPageTotal]= useState(1)
   let [pageNum, setPageNum]= useState(1)
@@ -59,6 +60,93 @@ const ManagerTaskList = () => {
           console.log('Something went wrong', error);
         })
   }
+
+  const initDelete = (taskNo) => {
+    let initData={
+      taskNo:taskNo
+    }
+    dataService.exe("taskList/del",initData)
+        .then(response => {
+          console.log('Printing employees data/ delete ', response.data);
+          initTable();
+        })
+        .catch(error => {
+          console.log('Something went wrong', error);
+        })
+  }
+
+  const ItemSet=(item)=>{
+    setTaskNo(item.taskNo)
+    setTaskAsNo(item.taskAsNo)
+    // setUserNo(item.userNo)
+    // setUserLoginName(item.userLoginName)
+    // setUserTrueName(item.userTrueName)
+  }
+
+  const ContentDel = () => {
+
+    const initDeletetask = (taskAsNo,taskNo) => {
+      setDelVisible(false);
+      let initData={
+        taskAsNo:taskAsNo
+      }
+      console.log('Task As NO', taskAsNo);
+      dataService.exe("taskAssignment/del",initData)
+          .then(response => {
+            console.log('Printing employees data/ delete ', response.data);
+            initReports(taskNo);
+          })
+          .catch(error => {
+            console.log('Something went wrong', error);
+          })
+    }
+
+    // const handleDel = (event) => {
+    //   event.preventDefault()
+    //   setDelVisible(false)
+    //   const postData ={
+    //     managementOperatorNo:userNo
+    //   }
+    //   dataService.exe("managementOperator/del",postData)
+    //       .then(response => {
+    //         console.log('Del successfully', response.data);
+    //         DataAlertShow(response.data)
+    //         initTable();
+    //       })
+    //       .catch(error => {
+    //         console.log('Del wrong', error);
+    //       })
+    // }
+
+    return (
+        <>
+          <CModal visible={delVisible} onClose={() => setDelVisible(false)} alignment="center">
+            <CModalHeader>
+              <CModalTitle>Delete List</CModalTitle>
+            </CModalHeader>
+            {/* <CForm onSubmit={handleDel}> */}
+              <CModalBody>
+                <CInputGroup className="mb-3">
+                  <CInputGroupText >Are You Sure you want to delete task?</CInputGroupText>
+                  {/* <CFormInput value={taskAsNo} readOnly disabled /> */}
+                </CInputGroup>
+              </CModalBody>
+              <CModalFooter>
+                <CButton color="secondary" >
+                  Close
+                </CButton>
+                <CButton color="primary" onClick={() => initDeletetask(taskAsNo,taskNo)>setDelVisible(false)}>
+                  Delete
+                </CButton>
+              </CModalFooter>
+            {/* </CForm> */}
+          </CModal>
+        </>
+    )
+  }
+  
+
+
 
   function Tooltip(txt){
     return (
@@ -137,8 +225,10 @@ const ManagerTaskList = () => {
                             <CTableHeaderCell>Target Qty</CTableHeaderCell>
                             <CTableHeaderCell>State</CTableHeaderCell>
                             <CTableHeaderCell>Qty Done</CTableHeaderCell>
+                            <CTableHeaderCell>Priority</CTableHeaderCell>
                             <CTableHeaderCell>Remarks</CTableHeaderCell>
                             <CTableHeaderCell>Submit Time</CTableHeaderCell>
+                            <CTableHeaderCell>Action</CTableHeaderCell>
                           </CTableRow>
                         </CTableHead>
                         <CTableBody>
@@ -154,8 +244,12 @@ const ManagerTaskList = () => {
                                 <CTableHeaderCell>{item.targetQty}</CTableHeaderCell>
                                 <CTableHeaderCell>{statCheck(item.assignmentState,item.qtyDone)}</CTableHeaderCell>
                                 <CTableHeaderCell>{item.qtyDone}</CTableHeaderCell>
+                                <CTableHeaderCell>{item.priority}</CTableHeaderCell>
                                 <CTableHeaderCell>{item.remarks}</CTableHeaderCell>
                                 <CTableHeaderCell>{item.submitTime && moment(item.submitTime).format("HH:mm:ss DD/MM/YYYY")}</CTableHeaderCell>
+                                <CTableHeaderCell>
+                                  <CButton color="danger" onClick={() => ItemSet(item)>setDelVisible(true)}>Delete</CButton>
+                                </CTableHeaderCell>
                               </CTableRow>
                           ))
                           }
@@ -242,7 +336,7 @@ const ManagerTaskList = () => {
                       <CTableHeaderCell>Purchase Order No</CTableHeaderCell>
                       <CTableHeaderCell>Purchase Order Date</CTableHeaderCell>
                       <CTableHeaderCell>Issue Date</CTableHeaderCell>
-                      <CTableHeaderCell>Action</CTableHeaderCell>
+                      <CTableHeaderCell colSpan={2}>Action</CTableHeaderCell>
                     </CTableRow>
                   </CTableHead>
                   <CTableBody>
@@ -287,6 +381,9 @@ const ManagerTaskList = () => {
                           <CTableDataCell>
                             <CButton color="primary" onClick={() => initReports(item.taskNo)>setRestVisible(true)}>Reports</CButton>
                           </CTableDataCell>
+                          <CTableDataCell>  
+                            <CButton color="danger" onClick={() => initDelete(item.taskNo)}>Delete</CButton>
+                          </CTableDataCell>
                         </CTableRow>
                     ))
                     }
@@ -308,6 +405,7 @@ const ManagerTaskList = () => {
           </CCol>
         </CRow>
         {ContentReports()}
+        {ContentDel()}
       </>
   )
 }
